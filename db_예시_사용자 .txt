@@ -1,0 +1,7 @@
+USER
+{
+	"_id": ObjectId("efwef"),			#db에서 관리하는 식별자
+	"userId":"00001"					#사용자 iD
+	"access level" : "3", 				#접근권한
+	
+}

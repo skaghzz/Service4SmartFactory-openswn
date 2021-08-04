@@ -1,0 +1,107 @@
+{
+    "_id" : ObjectId("59839c897e81e702f5304454"),
+    "machineID" : "1111",
+    "name" : "machineName01",
+    "accessLevel" : "3",
+    "nearWorkerID" : "0EB2",
+    "sensorState" : {
+        "photosynthetic" : "300",
+        "solar" : "7",
+        "motor" : "0"
+    },
+    "manual" : [
+        {
+            "num" : "0",
+            "instruction" : [ 
+                "이상없음"
+            ]
+        }, 
+        {
+            "num" : "1",
+            "instruction" : [ 
+                "solar가 너무 높다 1", 
+                "solar가 너무 높다 2", 
+                "solar가 너무 높다 3", 
+                "solar가 너무 높다 4", 
+                "solar가 너무 높다 5"
+            ]
+        }, 
+        {
+            "num" : "2",
+            "instruction" : [ 
+                "solar가 너무 낮다 1", 
+				"solar가 너무 낮다 2", 
+				"solar가 너무 낮다 3", 
+				"solar가 너무 낮다 4", 
+				"solar가 너무 낮다 5"
+            ]
+        },
+		        {
+            "num" : "3",
+            "instruction" : [ 
+                "photosynthetic가 너무 높다 1", 
+				"photosynthetic가 너무 높다 2", 
+				"photosynthetic가 너무 높다 3", 
+				"photosynthetic가 너무 높다 4", 
+				"photosynthetic가 너무 높다 5"
+            ]
+        },
+		        {
+            "num" : "4",
+            "instruction" : [ 
+                "photosynthetic가 너무 낮다 1", 
+				"photosynthetic가 너무 낮다 2", 
+				"photosynthetic가 너무 낮다 3", 
+				"photosynthetic가 너무 낮다 4", 
+				"photosynthetic가 너무 낮다 5"
+            ]
+        }
+    ]
+}
+
+db.getCollection('sensorDB').find({
+                "sensorState": {
+					$elemMatch: {
+						"time":{
+							$gte: ISODate("2017-09-25T00:00:00.000Z"),
+							$lt: ISODate("2017-10-05T00:00:00.000Z")
+						}
+					}
+				}
+			})
+			
+db.getCollection('sensorDB').find({
+					"sensorState": {$elemMatch: {"sensor" : "solar"}}
+                },{
+					"sensorState": {$elemMatch: {"sensor" : "solar"}}
+				}
+				)
+				
+db.getCollection('sensorDB').find({ "machineID":"b83c" },
+                                  { "sensorState" : { $elemMatch: {data : "35" } } }, {'modules.$':1} )
+								  
+db.getCollection('sensors').aggregate(
+{$match: {machineID:"b83c"}},
+{$unwind:"$sensorState"},
+{$match: {"sensorState.sensor":"solar"}},
+{$match: {"sensorState.time":{
+            $gte: ISODate("2017-09-25T00:00:00.000Z"),
+            $lt: ISODate("2017-10-05T00:00:00.000Z")}
+          } } )
+		  
+		  
+db.getCollection('sensors').aggregate(
+{$match: {machineID:"1111"}},
+{$unwind:"$sensorState"},
+{$match: {"sensorState.sensor":"photosynthetic"}},
+{$match: {"sensorState.time":{
+            $gte: ISODate("2017-09-25T00:00:00.000Z"),
+            $lt: ISODate("2017-10-06T00:00:00.000Z")}
+          } },
+{$group: {
+    _id:"$machineID",
+    avgValue:{
+        $avg:"$sensorState.data"
+        }
+    }}
+ )
