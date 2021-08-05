@@ -4,7 +4,7 @@ IoT 무선 네트워크 기반 스마트팩토리 작업자 지원 서비스
 ## 설명
 - 2017년 하반기 정보컴퓨터공학부 졸업과제
 - [자세한 내용은 여기.pdf](./최종보고서_IoT%20무선%20네트워크%20기반%20스마트팩토리%20작업자%20지원%20서비스.pdf)
-- [![시연영상](http://img.youtube.com/vi/bT2o0SEFjhQ/0.jpg)](https://youtu.be/bT2o0SEFjhQ) 
+- [시연영상 youtube](http://img.youtube.com/vi/bT2o0SEFjhQ/0.jpg)
 
 ## usage manual
 ### openwsn
